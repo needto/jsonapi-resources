@@ -624,6 +624,12 @@ end
 class RelatedThing < ActiveRecord::Base
   belongs_to :from, class_name: Thing, foreign_key: :from_id
   belongs_to :to, class_name: Thing, foreign_key: :to_id
+
+  validate :from_to_inequality
+
+  def from_to_inequality
+    errors.add(:from, "cannot be equal to `to`") if from_id == to_id
+  end
 end
 
 class Question < ActiveRecord::Base
@@ -909,6 +915,9 @@ end
 
 module Api
   class BoxesController < JSONAPI::ResourceController
+  end
+
+  class ThingsController < JSONAPI::ResourceController
   end
 end
 

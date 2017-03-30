@@ -312,6 +312,17 @@ class RequestTest < ActionDispatch::IntegrationTest
     assert_equal 204, status
   end
 
+  def test_post_update_relationship_to_many_through_failed_validation
+    rogue = Thing.last
+    post "/api/things/#{rogue.id}/relationships/things", params: { 'data' => [{'type' => 'things', 'id' => rogue.id.to_s }]}.to_json,
+         headers: {
+           'CONTENT_TYPE' => JSONAPI::MEDIA_TYPE,
+           'Accept' => JSONAPI::MEDIA_TYPE
+         }
+
+    assert_equal 422, status
+  end
+
   def test_put_update_relationship_to_many_acts_as_set
     # Comments are acts_as_set=false so PUT/PATCH should respond with 403. Note: JR currently treats PUT and PATCH as equivalent
 

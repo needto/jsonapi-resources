@@ -263,6 +263,7 @@ TestApp.routes.draw do
 
   namespace :api do
     jsonapi_resources :boxes
+    jsonapi_resources :things
 
     namespace :v1 do
       jsonapi_resources :people
